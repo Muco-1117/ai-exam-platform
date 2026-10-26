@@ -1,0 +1,6 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Gateway" type="NodeJSConfigurationType" factoryName="Node.js" working-dir="$PROJECT_DIR$/gateway" path-to-js-file="$PROJECT_DIR$/gateway/server.mjs" node-parameters="--enable-source-maps">
+    <envs />
+    <method v="2" />
+  </configuration>
+</component>

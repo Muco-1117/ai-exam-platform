@@ -1,0 +1,7 @@
+server:
+  port: ${PORT:8083}
+spring:
+  application:
+    name: ai-service
+service:
+  token: ${SERVICE_TOKEN:test-service-token}

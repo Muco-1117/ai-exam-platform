@@ -1,0 +1,8 @@
+**/node_modules/
+**/target/
+**/dist/
+.env.local
+.runtime/
+docs/qa/
+**/__pycache__/
+*.log

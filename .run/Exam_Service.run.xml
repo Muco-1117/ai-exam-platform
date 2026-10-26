@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Exam Service" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="com.aiexam.AiExamApplication" />
+    <module name="ai-exam-backend" />
+    <option name="VM_PARAMETERS" value="-Dfile.encoding=UTF-8" />
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/backend" />
+    <method v="2"><option name="Make" enabled="true" /></method>
+  </configuration>
+</component>

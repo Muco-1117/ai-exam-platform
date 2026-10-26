@@ -1,0 +1,7 @@
+server:
+  port: ${PORT:8082}
+spring:
+  application:
+    name: judge-service
+service:
+  token: ${SERVICE_TOKEN:test-service-token}

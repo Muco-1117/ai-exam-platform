@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="All Services" type="CompoundRunConfigurationType">
+    <toRun name="Judge Service" type="Application" />
+    <toRun name="AI Service" type="Application" />
+    <toRun name="Exam Service" type="Application" />
+    <toRun name="Gateway" type="NodeJSConfigurationType" />
+    <method v="2" />
+  </configuration>
+</component>

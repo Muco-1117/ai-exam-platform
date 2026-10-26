@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Judge Service" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="com.aiexam.JudgeServiceApplication" />
+    <module name="judge-service" />
+    <option name="VM_PARAMETERS" value="-Dfile.encoding=UTF-8" />
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/services/judge-service" />
+    <method v="2"><option name="Make" enabled="true" /></method>
+  </configuration>
+</component>
