@@ -29,8 +29,8 @@ mybatis-plus:
 
 aiexam:
   jwt:
-    # HS256 签名密钥(长度>=32字节),生产环境请更换
-    secret: ${JWT_SECRET:dev-only-change-me-please-rotate}
+    # 必须通过环境变量配置至少 32 字节的独立随机密钥
+    secret: ${JWT_SECRET:}
     expire-hours: 24
 
 services:

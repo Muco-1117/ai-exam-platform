@@ -1,5 +1,6 @@
 package com.aiexam.common;
 
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +21,13 @@ public class JwtUtil {
 
     @Value("${aiexam.jwt.expire-hours}")
     private long expireHours;
+
+    @PostConstruct
+    void validateSecret() {
+        if (secret == null || secret.isBlank() || secret.getBytes(StandardCharsets.UTF_8).length < 32) {
+            throw new IllegalStateException("JWT_SECRET must contain at least 32 UTF-8 bytes; configure a private random secret before starting the service");
+        }
+    }
 
     private SecretKey key() {
         return Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
