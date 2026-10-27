@@ -26,6 +26,7 @@ const router = createRouter({
         { path: 'questions', name: 'QuestionBank', component: () => import('@/views/QuestionBank.vue') },
         { path: 'questions/:id', name: 'QuestionDetail', component: () => import('@/views/QuestionDetail.vue') },
         { path: 'practice', name: 'PracticeRecords', component: () => import('@/views/PracticeRecords.vue') },
+        { path: 'review', name: 'ReviewSession', component: () => import('@/views/ReviewSession.vue') },
         { path: 'wrong', name: 'WrongBook', component: () => import('@/views/WrongBook.vue') },
         { path: 'favorites', name: 'MyFavorites', component: () => import('@/views/MyFavorites.vue') },
         { path: 'exams', name: 'ExamList', component: () => import('@/views/ExamList.vue') },

@@ -119,6 +119,21 @@ export interface WrongItem {
   [key: string]: unknown
 }
 
+export interface ReviewItem {
+  questionId: number
+  wrongCount?: number
+  lastWrongAt?: string | null
+  nextReviewAt?: string | null
+  question: QuestionCard
+}
+
+export interface ReviewSet {
+  items: ReviewItem[]
+  dueCount: number
+  activeCount: number
+  limit: number
+}
+
 /** 收藏条目 */
 export interface FavorItem {
   id?: number

@@ -1,5 +1,5 @@
 import request from '@/api/request'
-import type { JudgeResult, PageResult, PracticeRecord, PracticeStats } from '@/api/types'
+import type { JudgeResult, PageResult, PracticeRecord, PracticeStats, ReviewSet } from '@/api/types'
 
 export function submitPractice(data: {
   questionId: number
@@ -14,4 +14,8 @@ export function getPracticePage(params: { page?: number; size?: number }): Promi
 
 export function getPracticeStats(): Promise<PracticeStats> {
   return request.get<PracticeStats>('/practice/stats')
+}
+
+export function getReviewSet(limit = 10): Promise<ReviewSet> {
+  return request.get<ReviewSet>('/practice/review', { limit })
 }

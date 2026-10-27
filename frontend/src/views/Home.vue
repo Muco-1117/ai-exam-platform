@@ -8,7 +8,8 @@
         </div>
         <div class="quick-entry">
           <el-button type="primary" :icon="EditPen" @click="router.push('/questions')">去刷题</el-button>
-          <el-button type="warning" :icon="WarningFilled" @click="router.push('/wrong')">错题本</el-button>
+          <el-button type="warning" :icon="WarningFilled" @click="router.push('/review')">今日复习</el-button>
+          <el-button plain @click="router.push('/wrong')">错题本</el-button>
           <el-button type="success" :icon="Histogram" @click="router.push('/exams')">考试中心</el-button>
         </div>
       </div>

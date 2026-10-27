@@ -18,6 +18,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,6 +67,7 @@ public class PracticeService {
                 wq.setQuestionId(dto.getQuestionId());
                 wq.setWrongCount(1);
                 wq.setMastered(0);
+                wq.setLastWrongAt(LocalDateTime.now());
                 wrongQuestionMapper.insert(wq);
             } else {
                 exist.setWrongCount(exist.getWrongCount() + 1);
@@ -175,5 +179,60 @@ public class PracticeService {
         }
         exist.setMastered(1);
         wrongQuestionMapper.updateById(exist);
+    }
+
+    /**
+     * 返回到期的错题复习队列。间隔按错误次数递增，避免用户每天重复刷同一批题。
+     * 复习队列只返回不含答案的题卡，提交仍统一走 /practice/submit。
+     */
+    public Map<String, Object> reviewSet(Long userId, int requestedLimit) {
+        int limit = Math.max(1, Math.min(requestedLimit, 50));
+        LocalDateTime now = LocalDateTime.now();
+        List<WrongQuestion> active = wrongQuestionMapper.selectList(new LambdaQueryWrapper<WrongQuestion>()
+                .eq(WrongQuestion::getUserId, userId)
+                .eq(WrongQuestion::getMastered, 0));
+        List<WrongQuestion> due = active.stream()
+                .filter(item -> isDue(item, now))
+                .sorted(Comparator.comparingInt((WrongQuestion item) -> item.getWrongCount() == null ? 1 : item.getWrongCount())
+                        .reversed()
+                        .thenComparing(WrongQuestion::getLastWrongAt, Comparator.nullsFirst(Comparator.naturalOrder())))
+                .limit(limit)
+                .toList();
+        List<Map<String, Object>> items = new ArrayList<>();
+        for (WrongQuestion item : due) {
+            Question question = questionMapper.selectById(item.getQuestionId());
+            if (question == null || !Integer.valueOf(1).equals(question.getReviewStatus())) continue;
+            Map<String, Object> row = new HashMap<>();
+            row.put("questionId", item.getQuestionId());
+            row.put("wrongCount", item.getWrongCount());
+            row.put("lastWrongAt", item.getLastWrongAt());
+            row.put("nextReviewAt", nextReviewAt(item, now));
+            row.put("question", questionService.toMap(question, true));
+            items.add(row);
+        }
+        Map<String, Object> result = new HashMap<>();
+        result.put("items", items);
+        result.put("dueCount", items.size());
+        result.put("activeCount", active.size());
+        result.put("limit", limit);
+        return result;
+    }
+
+    private boolean isDue(WrongQuestion item, LocalDateTime now) {
+        if (item.getLastWrongAt() == null) return true;
+        return !nextReviewAt(item, now).isAfter(now);
+    }
+
+    private LocalDateTime nextReviewAt(WrongQuestion item, LocalDateTime now) {
+        if (item.getLastWrongAt() == null) return now;
+        int wrongCount = Math.max(1, item.getWrongCount() == null ? 1 : item.getWrongCount());
+        int intervalDays = switch (Math.min(wrongCount, 5)) {
+            case 1 -> 1;
+            case 2 -> 3;
+            case 3 -> 7;
+            case 4 -> 14;
+            default -> 30;
+        };
+        return item.getLastWrongAt().plus(intervalDays, ChronoUnit.DAYS);
     }
 }

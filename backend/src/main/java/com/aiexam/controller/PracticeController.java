@@ -34,6 +34,11 @@ public class PracticeController {
         return Result.ok(practiceService.stats(UserContext.userId()));
     }
 
+    @GetMapping("/practice/review")
+    public Result<Map<String, Object>> review(@RequestParam(defaultValue = "10") int limit) {
+        return Result.ok(practiceService.reviewSet(UserContext.userId(), limit));
+    }
+
     @GetMapping("/wrong/page")
     public Result<Page<Map<String, Object>>> wrongPage(@RequestParam(defaultValue = "1") long page,
                                                        @RequestParam(defaultValue = "10") long size) {
