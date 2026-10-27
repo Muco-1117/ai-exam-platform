@@ -1,8 +1,41 @@
 # AI 智能刷题考试平台
 
+[![CI](https://github.com/Muco-1117/ai-exam-platform/actions/workflows/ci.yml/badge.svg)](https://github.com/Muco-1117/ai-exam-platform/actions/workflows/ci.yml) [![Java 21](https://img.shields.io/badge/Java-21-ED8B00?logo=openjdk&logoColor=white)](https://www.oracle.com/java/technologies/downloads/) [![Vue 3](https://img.shields.io/badge/Vue-3-42b883?logo=vuedotjs&logoColor=white)](https://vuejs.org/) [![Security audit](https://img.shields.io/badge/npm%20audit-0%20vulnerabilities-2ea44f)](docs/验证记录.md)
+
 基于 **Spring Boot 3、Vue 3 和独立 AI / 判题服务**的在线练习与考试平台。面向管理员和学生，覆盖题库维护、练习、错题复习、考试、自动评分，以及 AI 出题确认与审核流程。
 
 本仓库包含平台源码、初始化 SQL、测试和运行文档。
+
+## 为什么值得看
+
+这是一个可以从浏览器入口一路追到服务边界的全栈作品：Vue 页面通过 Node 网关访问 Spring Boot 业务服务，业务服务再调用独立 AI 和判题服务。AI 结果不会直接入库，而是经过 Redis 暂存、管理员确认和题目审核；练习与考试判分走独立 HTTP 服务，便于替换实现和单独验收。
+
+适合快速查看的入口：
+
+- [系统架构与服务边界](docs/服务与接口说明.md)
+- [运行与部署](docs/运行与部署说明.md)
+- [真实 API 验收与测试记录](docs/验证记录.md)
+- [AI 出题核心流程](backend/src/main/java/com/aiexam/ai/AiQuestionService.java)
+- [判题策略实现](services/judge-service/src/main/java/com/aiexam/JudgeService.java)
+
+## 能力矩阵
+
+| 招聘关注点 | 仓库中的可验证证据 |
+| --- | --- |
+| AI 产品落地 | OpenAI 兼容接口、DEMO/LIVE 双模式、异步任务、结果确认、人工审核 |
+| 全栈交付 | Vue 3 + TypeScript + Pinia、Node 网关、Spring Boot、MySQL、Redis |
+| 服务化设计 | 业务、AI、判题三个独立服务，内部令牌校验和健康检查 |
+| 可靠性意识 | 交卷幂等、Redis TTL、确认锁、权限边界、JWT 配置启动校验 |
+| 工程质量 | Maven 测试、前端构建、npm audit、隔离数据库 API 验收、GitHub Actions |
+
+## 90 秒演示路径
+
+1. 使用 `student / 123456` 登录，打开题库并完成一次练习，查看判分与错题本。
+2. 使用 `admin / 123456` 登录，在题目管理中提交 AI 出题任务。
+3. 无模型 Key 时观察 `DEMO` 结果；配置受控的 `ai.api.key` 后可切换 `LIVE`，确认后还需审核题目。
+4. 创建、发布一套试卷，使用学生账号开始考试、保存答案并交卷，查看成绩和排行榜。
+
+演示账号只适用于本地初始化数据库。公开部署前请替换账号、`JWT_SECRET`、`SERVICE_TOKEN` 和模型 Key。
 
 ## 功能
 
